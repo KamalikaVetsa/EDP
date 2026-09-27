@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Resume-to-Job Matching Platform</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Resume-to-Job Matching Platform</h1>
+
+    <p class="subtitle">
+        Upload a job description and resumes,
+        then rank candidates based on relevance.
+    </p>
+
+
+    <!-- JOB DESCRIPTION -->
+
+    <div class="card">
+
+        <h2>1. Upload a Job Description</h2>
+
+        <form
+            action="/upload-job"
+            method="post"
+            enctype="multipart/form-data"
+        >
+
+            <label>Job Title</label>
+
+            <input
+                type="text"
+                name="title"
+                placeholder="e.g. Machine Learning Engineer"
+                required
+            >
+
+            <label>Job Description File</label>
+
+            <input
+                type="file"
+                name="file"
+                accept=".pdf,.docx,.txt"
+                required
+            >
+
+            <button type="submit">
+                Upload Job
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- RESUMES -->
+
+    <div class="card">
+
+        <h2>2. Upload Resumes</h2>
+
+        <form
+            action="/upload-resumes"
+            method="post"
+            enctype="multipart/form-data"
+        >
+
+            <label>
+                Resume Files
+            </label>
+
+            <input
+                type="file"
+                name="files"
+                accept=".pdf,.docx,.txt"
+                multiple
+                required
+            >
+
+            <button type="submit">
+                Upload Resumes
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- JOBS -->
+
+    <div class="card">
+
+        <h2>
+            Job Descriptions ({{ jobs|length }})
+        </h2>
+
+        {% if jobs %}
+
+        <ul class="plain">
+
+            {% for job in jobs %}
+
+            <li>
+
+                <span>
+                    {{ job.title }}
+                </span>
+
+                <form
+                    action="/match/{{ job.id }}"
+                    method="post"
+                    style="margin: 0;"
+                >
+
+                    <button
+                        type="submit"
+                        style="
+                            margin: 0;
+                            padding: 0.35rem 0.8rem;
+                            font-size: 0.85rem;
+                        "
+                    >
+                        Rank Candidates
+                    </button>
+
+                </form>
+
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+        {% else %}
+
+        <p class="small">
+            No job descriptions uploaded yet.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- RESUMES -->
+
+    <div class="card">
+
+        <h2>
+            Resumes on File ({{ resumes|length }})
+        </h2>
+
+        {% if resumes %}
+
+        <ul class="plain">
+
+            {% for resume in resumes %}
+
+            <li>
+
+                <span>
+                    {{ resume.candidate_name }}
+                </span>
+
+                <span class="badge">
+                    {{ resume.filename }}
+                </span>
+
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+        {% else %}
+
+        <p class="small">
+            No resumes uploaded yet.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

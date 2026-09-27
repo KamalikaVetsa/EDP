@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Matching Results
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <a
+        href="/"
+        class="back-link"
+    >
+        &larr; Back to Upload
+    </a>
+
+
+    <h1>
+        Candidate Ranking
+    </h1>
+
+
+    <p class="subtitle">
+
+        Job:
+        <strong>
+            {{ job.title }}
+        </strong>
+
+        &middot;
+
+        {{ results|length }}
+        resume(s) scored by cosine similarity.
+
+    </p>
+
+
+    <div class="card">
+
+        {% if results %}
+
+            {% for r in results %}
+
+            <div class="match-row">
+
+                <div>
+
+                    <div>
+
+                        <strong>
+                            {{ r.resume.candidate_name }}
+                        </strong>
+
+                        <span class="badge">
+                            {{ r.resume.filename }}
+                        </span>
+
+                    </div>
+
+
+                    {% if r.keywords %}
+
+                    <div class="keywords">
+
+                        Shared terms:
+
+                        {{ r.keywords|join(", ") }}
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div
+                    class="
+                        score
+
+                        {% if r.score >= 60 %}
+                            good
+
+                        {% elif r.score >= 30 %}
+                            mid
+
+                        {% else %}
+                            low
+                        {% endif %}
+                    "
+                >
+
+                    {{ r.score }}%
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="small">
+
+                No resumes on file yet.
+                Upload some from the home page.
+
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
